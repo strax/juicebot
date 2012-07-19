@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
  * @since 1.0
  */
 public class BotBootstrap {
-	private ScheduledExecutorService stpe;
+	private ScheduledExecutorService scheduler;
 	private IBot bot;
 
 	/**
@@ -41,7 +41,7 @@ public class BotBootstrap {
 	 */
 	public BotBootstrap(IBot bot) {
 		this.bot = bot;
-		this.stpe = Executors.newSingleThreadScheduledExecutor();
+		this.scheduler = Executors.newSingleThreadScheduledExecutor();
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class BotBootstrap {
 										bot.periodic();
 									}
 								};
-			stpe.scheduleWithFixedDelay(command, 0, Integer.parseInt(bot.getConfiguration().get("BOT_PERIODIC")), TimeUnit.MILLISECONDS);
+			scheduler.scheduleWithFixedDelay(command, 0, Integer.parseInt(bot.getConfiguration().get("BOT_PERIODIC")), TimeUnit.MILLISECONDS);
 		}
 	}
 
@@ -63,7 +63,7 @@ public class BotBootstrap {
 	 * Shuts down the boostrapped bot.
 	 */
 	public void shutdown() {
-		stpe.shutdown();
+		scheduler.shutdown();
 		bot.disconnect();
 	}
 }
